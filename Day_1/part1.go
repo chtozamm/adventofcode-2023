@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -9,7 +8,7 @@ import (
 	"unicode"
 )
 
-func Part1() {
+func firstPart() (sum uint) {
 	content, err := os.ReadFile("input.txt")
 
 	if err != nil {
@@ -18,25 +17,23 @@ func Part1() {
 
 	lines := strings.Split(string(content), "\n")
 
-	var sum uint = 0
-
 	for _, line := range lines {
-		var firstDigit uint = 00
-		var lastDigit uint = 00
+		var firstDigit uint
+		var lastDigit uint
 
 		for _, char := range line {
-			if unicode.IsDigit(char) && firstDigit == 00 {
-				digit, _ := strconv.Atoi(string(char))
-				firstDigit = uint(digit)
-			}
-
 			if unicode.IsDigit(char) {
-				digit, _ := strconv.Atoi(string(char))
+				digit, _ := strconv.Atoi(string(rune(char)))
+
+				if firstDigit == 0 {
+					firstDigit = uint(digit)
+				}
 				lastDigit = uint(digit)
 			}
 		}
 
 		sum += firstDigit*10 + lastDigit
 	}
-	fmt.Printf("Part 1 > Sum of calibration values: %v\n", sum)
+
+	return
 }
